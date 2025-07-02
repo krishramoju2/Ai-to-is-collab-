@@ -1,70 +1,69 @@
-// app/api/chat/route.ts (Enhanced Offline GPT-Like Engine)
+// app/api/chat/route.ts (Enhanced GPT-Style Engine w/ Stylish Display Enhancers)
 
 export async function POST(req: Request) {
   const { input, bots } = await req.json();
 
-  // Fallback in case no bots selected
   if (!bots || bots.length === 0) {
     return Response.json({
       responses: [
         {
-          name: 'system',
-          response: `Please select at least one bot to receive a response.`
+          name: '⚠️ System Notice',
+          response: `🚫 Please select at least one bot from the interface to proceed.`
         }
       ]
     });
   }
 
   const genericIntros = [
-    "Let's break this down:",
-    "Analyzing this logically:",
-    "Here's a thought-provoking insight:",
-    "My analysis on this is as follows:",
-    "A comprehensive perspective would be:",
-    "Delving into this, I’d suggest:",
-    "From my professional standpoint, here’s what I think:",
-    "If we explore this further, we might say:"
+    "🔍 Let's explore this:",
+    "🧠 Analyzing your query:",
+    "💡 Here's a thoughtful insight:",
+    "📊 Evaluating based on my field:",
+    "🔬 Here's a professional take:",
+    "🛰️ Zooming into the context:",
+    "🔧 Processing with domain tools:",
+    "📘 Informed perspective follows:"
   ];
 
   const expertiseByBot = {
     cyber: {
       title: "🛡️ Cybersecurity Expert",
       skills: [
-        "network security",
         "ethical hacking",
         "malware detection",
         "digital forensics",
-        "penetration testing"
+        "penetration testing",
+        "threat modeling"
       ]
     },
     deepsea: {
-      title: "🌊 Marine Researcher",
+      title: "🌊 Deep Sea Marine Scientist",
       skills: [
-        "submersible operations",
-        "marine ecosystems",
-        "ocean current modeling",
-        "deep sea archaeology",
-        "marine robotics"
+        "oceanic trench analysis",
+        "hydrothermal vent mapping",
+        "marine AI swarm robotics",
+        "pressure-depth resilience tech",
+        "deep sonar imaging"
       ]
     },
     space: {
-      title: "🚀 Space Exploration Advisor",
+      title: "🚀 Space Systems Engineer",
       skills: [
-        "orbital mechanics",
-        "planetary science",
-        "satellite operations",
-        "astrophysics",
-        "international space law"
+        "asteroid redirection",
+        "ISS robotics integration",
+        "ion propulsion diagnostics",
+        "launch protocol logistics",
+        "space debris mitigation"
       ]
     },
     stock: {
-      title: "📈 Financial Analyst",
+      title: "📈 Quantitative Financial Strategist",
       skills: [
-        "quantitative modeling",
-        "market trend analysis",
-        "risk assessment",
-        "portfolio optimization",
-        "global economic strategy"
+        "Monte Carlo simulations",
+        "hedging risk modeling",
+        "derivative valuation",
+        "global fiscal metrics",
+        "AI-assisted forecasting"
       ]
     }
   };
@@ -74,16 +73,16 @@ export async function POST(req: Request) {
     const bot = expertiseByBot[botKey];
     const skill = bot.skills[Math.floor(Math.random() * bot.skills.length)];
 
-    const exampleResponse = `“${input}” is a great question. Drawing from my expertise in ${skill}, I would recommend considering both practical tools and strategic frameworks that align with current trends. Make sure to also factor in the ethical, technical, and long-term impacts of your decision.`;
+    const explanation = `“${input}” is a compelling prompt. Drawing from my experience in ${skill}, I'd recommend exploring best practices, real-time tools, and scenario-based frameworks that maximize efficiency and ethics.`;
 
-    return `${intro} ${exampleResponse}`;
+    return `${intro}\n\n🛠️ Domain: ${skill}\n📥 Input: "${input}"\n📤 Suggestion: ${explanation}`;
   }
 
   const responses = bots.map((bot: string) => {
     if (!expertiseByBot[bot]) {
       return {
-        name: bot,
-        response: `This bot is not recognized in the system.`
+        name: `❓ Unknown Bot (${bot})`,
+        response: `⚠️ This bot is not defined in the personality database.`
       };
     }
 

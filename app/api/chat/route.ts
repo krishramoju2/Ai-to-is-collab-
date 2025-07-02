@@ -1,94 +1,65 @@
-// app/api/chat/route.ts (Enhanced GPT-Style Engine w/ Stylish Display Enhancers)
-
 export async function POST(req: Request) {
   const { input, bots } = await req.json();
 
-  if (!bots || bots.length === 0) {
-    return Response.json({
-      responses: [
-        {
-          name: '⚠️ System Notice',
-          response: `🚫 Please select at least one bot from the interface to proceed.`
-        }
-      ]
-    });
-  }
-
-  const genericIntros = [
-    "🔍 Let's explore this:",
-    "🧠 Analyzing your query:",
-    "💡 Here's a thoughtful insight:",
-    "📊 Evaluating based on my field:",
-    "🔬 Here's a professional take:",
-    "🛰️ Zooming into the context:",
-    "🔧 Processing with domain tools:",
-    "📘 Informed perspective follows:"
+  const genericReplies = [
+    `That's an interesting question. Here's a possible take:`,
+    `Analyzing your input from my perspective, I'd say:`,
+    `Here's my considered response to that:`,
+    `Based on your prompt, I believe the best approach is:`,
+    `Sure, here's a detailed insight:`,
+    `Certainly. Let me explain it like this:`
   ];
 
   const expertiseByBot = {
-    cyber: {
-      title: "🛡️ Cybersecurity Expert",
-      skills: [
-        "ethical hacking",
-        "malware detection",
-        "digital forensics",
-        "penetration testing",
-        "threat modeling"
-      ]
-    },
-    deepsea: {
-      title: "🌊 Deep Sea Marine Scientist",
-      skills: [
-        "oceanic trench analysis",
-        "hydrothermal vent mapping",
-        "marine AI swarm robotics",
-        "pressure-depth resilience tech",
-        "deep sonar imaging"
-      ]
-    },
-    space: {
-      title: "🚀 Space Systems Engineer",
-      skills: [
-        "asteroid redirection",
-        "ISS robotics integration",
-        "ion propulsion diagnostics",
-        "launch protocol logistics",
-        "space debris mitigation"
-      ]
-    },
-    stock: {
-      title: "📈 Quantitative Financial Strategist",
-      skills: [
-        "Monte Carlo simulations",
-        "hedging risk modeling",
-        "derivative valuation",
-        "global fiscal metrics",
-        "AI-assisted forecasting"
-      ]
-    }
+    // Technology
+    cyber: "cybersecurity and digital forensics",
+    ai: "artificial intelligence and machine learning",
+    quantum: "quantum computing and quantum mechanics",
+    blockchain: "distributed ledger technologies and cryptography",
+    
+    // Science
+    deepsea: "marine biology and underwater robotics",
+    space: "aerospace engineering and orbital physics",
+    nano: "nanotechnology and materials science",
+    genetics: "genetic engineering and biotechnology",
+    
+    // Finance
+    stock: "finance, investment strategy, and market analysis",
+    crypto: "cryptocurrencies and decentralized finance",
+    econ: "macroeconomic theory and policy analysis",
+    
+    // Creative
+    design: "user experience and visual design principles",
+    music: "music theory and audio engineering",
+    story: "narrative structure and creative writing",
+    
+    // Social Sciences
+    psych: "cognitive psychology and behavioral analysis",
+    socio: "social dynamics and cultural anthropology",
+    polisci: "political theory and international relations",
+    
+    // Engineering
+    robotics: "mechatronics and autonomous systems",
+    civil: "structural engineering and urban planning",
+    energy: "renewable energy systems and sustainability",
+    
+    // Health
+    neuro: "neuroscience and brain-computer interfaces",
+    med: "clinical medicine and healthcare systems",
+    sport: "sports science and athletic performance",
+    
+    // Other
+    legal: "jurisprudence and contract law",
+    edu: "pedagogical methods and learning systems",
+    ling: "linguistics and natural language processing"
   };
 
-  function generateResponse(input: string, botKey: string): string {
-    const intro = genericIntros[Math.floor(Math.random() * genericIntros.length)];
-    const bot = expertiseByBot[botKey];
-    const skill = bot.skills[Math.floor(Math.random() * bot.skills.length)];
-
-    const explanation = `“${input}” is a compelling prompt. Drawing from my experience in ${skill}, I'd recommend exploring best practices, real-time tools, and scenario-based frameworks that maximize efficiency and ethics.`;
-
-    return `${intro}\n\n🛠️ Domain: ${skill}\n📥 Input: "${input}"\n📤 Suggestion: ${explanation}`;
-  }
-
   const responses = bots.map((bot: string) => {
-    if (!expertiseByBot[bot]) {
-      return {
-        name: `❓ Unknown Bot (${bot})`,
-        response: `⚠️ This bot is not defined in the personality database.`
-      };
-    }
-
+    const prefix = genericReplies[Math.floor(Math.random() * genericReplies.length)];
+    const domain = expertiseByBot[bot] || "general reasoning";
     return {
-      name: expertiseByBot[bot].title,
-      response: generateResponse(input, bot)
+      name: bot,
+      response: `${prefix} As a specialist in ${domain}, I'd interpret "${input}" as something worth exploring further in context of real-world developments.`
     };
   });
 
